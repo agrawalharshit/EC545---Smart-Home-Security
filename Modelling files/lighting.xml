@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+typedef int[1,3] room_id;
+
+chan present[room_id];
+chan absent[room_id];
+chan leave[room_id];
+chan entry[room_id];
+chan remote_open;
+chan remote_close;
+chan motion_sensor;</declaration>
+	<template>
+		<name x="5" y="5">Door</name>
+		<parameter>room_id id</parameter>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="-255" y="-51">
+			<name x="-366" y="-85">closed_absent</name>
+		</location>
+		<location id="id1" x="17" y="-51">
+			<name x="25" y="-93">opened_entry</name>
+		</location>
+		<location id="id2" x="17" y="110">
+			<name x="42" y="127">closed_present</name>
+		</location>
+		<location id="id3" x="-255" y="110">
+			<name x="-365" y="127">opened_leave</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-340" y="17">absent[id]!</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-161" y="110">leave[id]!</label>
+			<nail x="-17" y="110"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="25" y="17">present[id]!</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-161" y="-76">entry[id]!</label>
+		</transition>
+	</template>
+	<template>
+		<name>GarageDoor</name>
+		<location id="id4" x="-153" y="8">
+			<name x="-163" y="-26">off</name>
+		</location>
+		<location id="id5" x="68" y="8">
+			<name x="58" y="-26">open</name>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-85" y="68">remote_close!</label>
+			<nail x="-25" y="68"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-93" y="-68">remote_open!</label>
+			<nail x="-42" y="-51"/>
+		</transition>
+	</template>
+	<template>
+		<name>Corridor</name>
+		<declaration>clock timer;</declaration>
+		<location id="id6" x="-204" y="-8">
+			<name x="-214" y="-42">off</name>
+		</location>
+		<location id="id7" x="153" y="-8">
+			<name x="143" y="-42">on</name>
+			<committed/>
+		</location>
+		<location id="id8" x="-17" y="93">
+			<name x="-51" y="110">pending</name>
+			<label kind="invariant" x="-51" y="127">timer&lt;=5</label>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-178" y="42">timer&gt;5</label>
+			<nail x="-51" y="85"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="144" y="68">motion_sensor?</label>
+			<nail x="136" y="93"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="assignment" x="8" y="25">timer:=0</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-102" y="-127">motion_sensor?</label>
+			<nail x="-34" y="-102"/>
+		</transition>
+	</template>
+	<template>
+		<name>Garage</name>
+		<location id="id9" x="-212" y="0">
+			<name x="-222" y="-34">off</name>
+		</location>
+		<location id="id10" x="93" y="-8">
+			<name x="83" y="-42">on</name>
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-85" y="76">remote_close?</label>
+			<nail x="-51" y="76"/>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="-110" y="-93">remote_open?</label>
+			<nail x="-59" y="-76"/>
+		</transition>
+	</template>
+	<template>
+		<name>Room</name>
+		<parameter>room_id id</parameter>
+		<declaration>clock c;</declaration>
+		<location id="id11" x="-518" y="-85">
+			<name x="-552" y="-110">off</name>
+		</location>
+		<location id="id12" x="-170" y="-85">
+			<name x="-180" y="-119">on</name>
+			<urgent/>
+		</location>
+		<location id="id13" x="-170" y="42">
+			<name x="-153" y="34">stay</name>
+		</location>
+		<location id="id14" x="-518" y="42">
+			<name x="-586" y="25">pending</name>
+			<label kind="invariant" x="-578" y="42">c&lt;=5</label>
+		</location>
+		<init ref="id11"/>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id11"/>
+			<label kind="guard" x="-612" y="-34">c &gt; 5</label>
+			<nail x="-569" y="-25"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-382" y="102">leave[id]?</label>
+			<label kind="assignment" x="-357" y="119">c:=0</label>
+			<nail x="-348" y="102"/>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-391" y="25">present[id]?</label>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-433" y="-34">absent[id]?</label>
+			<label kind="assignment" x="-433" y="-17">c:=0</label>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-127" y="-59">present[id]?</label>
+			<nail x="-102" y="-17"/>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="-374" y="-102">entry[id]?</label>
+		</transition>
+	</template>
+	<template>
+		<name>MotionSensor</name>
+		<location id="id15" x="0" y="0">
+		</location>
+		<init ref="id15"/>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="51" y="-17">motion_sensor!</label>
+			<nail x="51" y="-68"/>
+			<nail x="51" y="42"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+// List one or more processes to be composed into a system.
+system Door,Room,GarageDoor,Corridor,Garage,MotionSensor;
+    </system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
