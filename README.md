@@ -40,3 +40,7 @@
 4. Defence strategy against intruder in different cases: house owner present(safety first); house owner absent; 
 5. Also, for different kind of invasion : physical/cyber;
 6. Two Arduinos: MEGA used for automated functions (e.g. occupancy-based lighting), Wifi-Module Arduino interfaces with the MEGA - overwrites automated commands based on input through phone application. 
+
+## Modelling: 
+
+## Coding: 
