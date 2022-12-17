@@ -42,7 +42,7 @@
 6. Two Arduinos: MEGA used for automated functions (e.g. occupancy-based lighting), Wifi-Module Arduino interfaces with the MEGA - overwrites automated commands based on input through phone application. 
 
 ## Modelling: 
-For modeling, UPPAAL:https://uppaal.org/ was used for creating the Finite State Maching corrsponding to lighting control, garage door control and RFID authentication system.
+For modeling, [UPPAAL](https://uppaal.org/) was used for creating the Finite State Machine corresponding to lighting control, garage door control and RFID authentication system.
 
 ## Coding: 
 #### 'SmartHomeMEGA.ino'
