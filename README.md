@@ -45,7 +45,7 @@
 For modeling, [UPPAAL](https://uppaal.org/) was used for creating the Finite State Machine corresponding to lighting control, garage door control and RFID authentication system.
 
 ## Coding: 
-#### 'SmartHomeMEGA.ino'
+### 'SmartHomeMEGA.ino'
 This file contains the arduino sketch which enables occupancy-based lighting, and control of the garage door servo setup - designed to be run on the Arduino MEGA 2560. The Wi-Fi control scheme via the Arduino UNO Wi-Fi Rev.2 is also included in this code. 
 ### 'authentication_RFID.ino'
 This file contains the code for Arduino UNO controling the RFID authentication system for smart home main entrence access. 
