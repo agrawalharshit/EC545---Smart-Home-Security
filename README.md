@@ -42,10 +42,15 @@
 6. Two Arduinos: MEGA used for automated functions (e.g. occupancy-based lighting), Wifi-Module Arduino interfaces with the MEGA - overwrites automated commands based on input through phone application. 
 
 ## Modelling: 
+For modeling, UPPAAL:https://uppaal.org/ was used for creating the Finite State Maching corrsponding to lighting control, garage door control and RFID authentication system.
 
 ## Coding: 
 #### 'SmartHomeMEGA.ino'
 This file contains the arduino sketch which enables occupancy-based lighting, and control of the garage door servo setup - designed to be run on the Arduino MEGA 2560. The Wi-Fi control scheme via the Arduino UNO Wi-Fi Rev.2 is also included in this code. 
+### 'authentication_RFID.ino'
+This file contains the code for Arduino UNO controling the RFID authentication system for smart home main entrence access. 
+### 'wifi_control.ino'
+This file contains the code for Arduino UNO Wi-Fi Rev.2 which setup a server running on Arduino board and receive data from webpage/phone application for lighting control. The control signal was forward to Arduino MEGA 2560 using software serial control.
 
 #### Note:
 These files are designed to be compiled and uploaded via the 'Arduino IDE' application, download instructions for this software are available here: [Arduino Software Download](https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE)
